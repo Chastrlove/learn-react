@@ -238,6 +238,7 @@ export function reconcileChildren(
   renderLanes: Lanes,
 ) {
   if (current === null) {
+    // 说明接下来要调谐的workInProgress fiber在当前的fiber树中不存在
     // If this is a fresh new component that hasn't been rendered yet, we
     // won't update its child set by applying minimal side-effects. Instead,
     // we will add them all to the child before it gets rendered. That means
@@ -1061,6 +1062,7 @@ function updateHostRoot(current, workInProgress, renderLanes) {
   const prevState = workInProgress.memoizedState;
   const prevChildren = prevState !== null ? prevState.element : null;
   cloneUpdateQueue(current, workInProgress);
+  // 将队列中的payload作为workInProgress的memoizedState
   processUpdateQueue(workInProgress, nextProps, null, renderLanes);
   const nextState = workInProgress.memoizedState;
   // Caution: React DevTools currently depends on this property
@@ -1113,6 +1115,7 @@ function updateHostRoot(current, workInProgress, renderLanes) {
   } else {
     // Otherwise reset hydration state in case we aborted and resumed another
     // root.
+    // 协调root下的子节点
     reconcileChildren(current, workInProgress, nextChildren, renderLanes);
     resetHydrationState();
   }
@@ -1131,6 +1134,7 @@ function updateHostComponent(
   }
 
   const type = workInProgress.type;
+  // 对于html标签根据pendingProps中的children来建立fiber
   const nextProps = workInProgress.pendingProps;
   const prevProps = current !== null ? current.memoizedProps : null;
 

@@ -247,6 +247,8 @@ export function createContainer(
   return createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks);
 }
 
+
+// ReactDOM.render Reconciler入口
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
@@ -314,6 +316,7 @@ export function updateContainer(
     update.callback = callback;
   }
 
+  //将elements放入current的updateQueue
   enqueueUpdate(current, update);
   scheduleUpdateOnFiber(current, lane, eventTime);
 
